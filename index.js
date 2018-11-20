@@ -16,6 +16,13 @@ const on = process => fn => process.on('message', async message => {
 });
 
 const send = process => {
+  const send = (...args) => {
+    const id = uid();
+    process.send({ symbol, id, args });
+    return new Promise((resolve, reject) => {
+      queue[id] = { resolve, reject };
+    });
+  };
   process.on('message', message => {
     if (!message || message.symbol !== symbol) { return; }
     const { id, result, error } = message;
@@ -30,13 +37,7 @@ const send = process => {
       resolve(result);
     }
   });
-  return (...args) => {
-    const id = uid();
-    process.send({ symbol, id, args });
-    return new Promise((resolve, reject) => {
-      queue[id] = { resolve, reject };
-    });
-  };
+  return send;
 }
 
 module.exports = process => ({ on: on(process), send: send(process) });
