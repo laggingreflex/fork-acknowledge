@@ -1,0 +1,7 @@
+{
+  "name": "fork-acknowledge",
+  "version": "0.0.0",
+  "description": "Get acknowledgements back from messages sent to forked processes",
+  "main": "index.js",
+  "repository": "laggingreflex/fork-acknowledge"
+}
